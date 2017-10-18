@@ -1,0 +1,7 @@
+- create reducer for...
+  - transforming URL lists of WordPress bologs
+  - AWS credentials
+
+- AWS SDK or HTTP https://aws.amazon.com/jp/polly/details/
+
+- Access Local Storage from React Native
