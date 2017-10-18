@@ -30,7 +30,8 @@ export default class PostCard extends React.Component {
   constructor(props) {
     super(props)
     this.state = { isStartPlaying: false }
-    this.onPressPlay = this::this.onPressPlay
+    this.onPlayTitlePress = this::this.onPlayTitlePress
+    this.onPlayContentPress = this::this.onPlayContentPress
   }
 
   /**
@@ -43,10 +44,10 @@ export default class PostCard extends React.Component {
     return true
   }
 
-  onPressPlay = () => {
+  onPlayTitlePress = () => {
     this.setState({ isStartPlaying: true })
 
-    const { content: { text }, title } = this.props
+    const { title } = this.props
     const sendingText = new Buffer(title, 'utf8').toString('base64')
     const mp3url = `${URL_BASE}/mp3?text=${sendingText}`
 
@@ -62,6 +63,24 @@ export default class PostCard extends React.Component {
     })
   }
 
+  onPlayContentPress = () => {
+    this.setState({ isStartPlaying: true })
+
+    const { content: { text } } = this.props
+    const sendingText = new Buffer(text, 'utf8').toString('base64')
+    const mp3url = `${URL_BASE}/mp3?text=${sendingText}`
+
+    Sound.setCategory('Playback')
+    const track = new Sound(mp3url, null, error => {
+      if (error) {
+        console.warn('error loading track:', error)
+      } else {
+        track.play(success => {
+          success && this.setState({ isStartPlaying: false })
+        })
+      }
+    })
+  }
   /**
    * render
    * @return {ReactElement|null|false} render a React element.
@@ -77,16 +96,24 @@ export default class PostCard extends React.Component {
           {title}
         </Text>
         <Text>{excerpt}</Text>
-        <View style={ { marginTop: 10 } }>
+        <View style={ { marginTop: 10, flex: 1 } }>
           {isStartPlaying ? (
-            <Text>{'playing'}</Text>
+            <Text>{'playing...'}</Text>
           ) : (
-            <Button
-              key={ 'mp3-play-button' }
-              onPress={ this.onPressPlay }
-              color={ 'red' }
-              title={ 'MP3再生' }
-            />
+            [
+              <Button
+                key={ 'title-play-button' }
+                onPress={ this.onPlayTitlePress }
+                color={ 'red' }
+                title={ 'タイトル読み上げ' }
+              />,
+              <Button
+                key={ 'content-play-button' }
+                onPress={ this.onPlayContentPress }
+                color={ 'red' }
+                title={ 'コンテンツ読み上げ' }
+              />,
+            ]
           )}
         </View>
       </View>
