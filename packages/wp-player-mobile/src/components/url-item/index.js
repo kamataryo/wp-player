@@ -69,7 +69,6 @@ export default class URLItem extends React.Component {
     return (
       <ScrollView
         style={ {
-          color: 'black',
           padding: 10,
           borderWidth: 0.5,
           borderColor: '#d6d7da',

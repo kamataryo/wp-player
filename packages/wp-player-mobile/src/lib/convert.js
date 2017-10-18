@@ -15,3 +15,12 @@ export const url2api = readerUrl => {
     .join('')
   return `${protocol}//${host}/wp-json/wp/v2/posts?slug=${slug}`
 }
+
+export const url2parts = readerUrl => {
+  const { protocol, host, pathname } = url.parse(readerUrl)
+  const slug = pathname
+    .split('/')
+    .filter(x => !!x)
+    .join('')
+  return { protocol, host, slug }
+}

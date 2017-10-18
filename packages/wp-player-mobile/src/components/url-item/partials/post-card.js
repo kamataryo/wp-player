@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, Button } from 'react-native'
-// import Sound from 'react-native-sound'
+import Sound from 'react-native-sound'
+import { url2parts } from '../../../lib/convert'
+import { Buffer } from 'buffer'
 
 const URL_BASE = 'http://localhost:3000'
 
@@ -41,16 +43,23 @@ export default class PostCard extends React.Component {
     return true
   }
 
-  onPressPlay = async () => {
-    const { content: { text } } = this.props
+  onPressPlay = () => {
     this.setState({ isStartPlaying: true })
-    // const track = new Sound(`${URL_BASE}/mp3?text=${text}`, null, error => {
-    //   if (error) {
-    //     console.log('error loading track:', e)
-    //   } else {
-    //     track.play()
-    //   }
-    // })
+
+    const { content: { text }, title } = this.props
+    const sendingText = new Buffer(title, 'utf8').toString('base64')
+    const mp3url = `${URL_BASE}/mp3?text=${sendingText}`
+
+    Sound.setCategory('Playback')
+    const track = new Sound(mp3url, null, error => {
+      if (error) {
+        console.warn('error loading track:', error)
+      } else {
+        track.play(success => {
+          success && this.setState({ isStartPlaying: false })
+        })
+      }
+    })
   }
 
   /**

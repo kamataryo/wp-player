@@ -10,6 +10,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.135.0"
+    "aws-sdk": "^2.135.0",
+    "isomorphic-fetch": "^2.2.1",
+    "request": "^2.83.0"
   }
 }
