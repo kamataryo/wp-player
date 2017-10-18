@@ -1,6 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, Button } from 'react-native'
+// import Sound from 'react-native-sound'
+
+const URL_BASE = 'http://localhost:3000'
 
 export default class PostCard extends React.Component {
   /**
@@ -24,8 +27,8 @@ export default class PostCard extends React.Component {
    */
   constructor(props) {
     super(props)
-    this.state = { isTransformed: false }
-    this.onPressTransform = this::this.onPressTransform
+    this.state = { isStartPlaying: false }
+    this.onPressPlay = this::this.onPressPlay
   }
 
   /**
@@ -38,8 +41,16 @@ export default class PostCard extends React.Component {
     return true
   }
 
-  onPressTransform = async () => {
-    this.setState({ isTransformed: true })
+  onPressPlay = async () => {
+    const { content: { text } } = this.props
+    this.setState({ isStartPlaying: true })
+    // const track = new Sound(`${URL_BASE}/mp3?text=${text}`, null, error => {
+    //   if (error) {
+    //     console.log('error loading track:', e)
+    //   } else {
+    //     track.play()
+    //   }
+    // })
   }
 
   /**
@@ -47,9 +58,10 @@ export default class PostCard extends React.Component {
    * @return {ReactElement|null|false} render a React element.
    */
   render() {
-    const { isTransformed } = this.state
+    const { isStartPlaying } = this.state
     const { title, content: { text } } = this.props
     const excerpt = text.slice(0, 100) + '...'
+
     return (
       <View>
         <Text style={ { fontWeight: 'bold', marginTop: 3, marginBottom: 5 } }>
@@ -57,15 +69,15 @@ export default class PostCard extends React.Component {
         </Text>
         <Text>{excerpt}</Text>
         <View style={ { marginTop: 10 } }>
-          {isTransformed ? (
+          {isStartPlaying ? (
+            <Text>{'playing'}</Text>
+          ) : (
             <Button
               key={ 'mp3-play-button' }
               onPress={ this.onPressPlay }
               color={ 'red' }
               title={ 'MP3再生' }
             />
-          ) : (
-            <Button onPress={ this.onPressTransform } title={ '変換' } />
           )}
         </View>
       </View>
