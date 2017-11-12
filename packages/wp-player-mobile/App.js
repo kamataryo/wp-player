@@ -4,11 +4,22 @@ import rootStore from './src/store'
 import { StyleSheet, View } from 'react-native'
 import URLList from './src/components/url-list'
 
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 30,
+    paddingHorizontal: 0,
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})
+
 export default class App extends React.Component {
   /**
    * constructor
    * @param  {object} props React props.
-   * @return {void}
+   * @return {void
    */
   constructor(props) {
     super(props)
@@ -40,14 +51,3 @@ export default class App extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 30,
-    paddingHorizontal: 0,
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
